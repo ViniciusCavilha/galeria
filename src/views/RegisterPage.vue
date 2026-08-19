@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <ion-page><ion-content :fullscreen="true">
     <main class="auth-shell register-shell">
       <section class="brand-panel">
@@ -26,13 +26,13 @@
   </ion-content></ion-page>
 </template>
 <script setup lang="ts">
-import { computed,ref } from 'vue';import { useRouter } from 'vue-router';
+import { computed, nextTick, ref } from 'vue';import { useRouter } from 'vue-router';
 import { IonButton,IonContent,IonIcon,IonInput,IonInputPasswordToggle,IonPage } from '@ionic/vue';
 import { alertCircleOutline,arrowForwardOutline,lockClosedOutline,mailOutline,personOutline,shieldCheckmarkOutline,sparklesOutline } from 'ionicons/icons';
 import { register } from '@/services/auth';
 const router=useRouter();const name=ref('');const email=ref('');const password=ref('');const confirmation=ref('');const error=ref('');
 const strengthClass=computed(()=>password.value.length>=10?'strong':password.value.length>=6?'medium':'weak');
 const strengthLabel=computed(()=>!password.value?'Digite uma senha':password.value.length>=10?'Senha forte':password.value.length>=6?'Senha válida':'Muito curta');
-async function submit(){error.value='';if(name.value.trim().split(/\s+/).length<2)error.value='Informe seu nome e sobrenome.';else if(password.value.length<6)error.value='A senha precisa ter pelo menos 6 caracteres.';else if(password.value!==confirmation.value)error.value='As duas senhas não coincidem.';else error.value=register({name:name.value,email:email.value,password:password.value})??'';if(!error.value)await router.replace('/home');}
+async function submit(){error.value='';if(password.value!==confirmation.value){error.value='As duas senhas não coincidem.';return;}error.value=register({name:name.value,email:email.value,password:password.value})??'';if(error.value)return;await nextTick();await router.replace('/home');}
 </script>
 <style scoped src="../theme/auth.css"></style>

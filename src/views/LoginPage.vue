@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <ion-page><ion-content :fullscreen="true">
     <main class="auth-shell">
       <section class="brand-panel">
@@ -24,11 +24,11 @@
   </ion-content></ion-page>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'; import { useRouter } from 'vue-router';
+import { nextTick, ref } from 'vue'; import { useRouter } from 'vue-router';
 import { IonButton,IonContent,IonIcon,IonInput,IonInputPasswordToggle,IonPage } from '@ionic/vue';
 import { alertCircleOutline,arrowForwardOutline,imagesOutline,lockClosedOutline,mailOutline } from 'ionicons/icons';
 import { signIn } from '@/services/auth';
 const router=useRouter();const email=ref('');const password=ref('');const error=ref('');
-async function submit(){error.value='';if(!signIn(email.value,password.value)){error.value='Não encontramos uma conta com esses dados.';return;}await router.replace('/home');}
+async function submit(){error.value='';if(!email.value.trim()||!password.value){error.value='Preencha o e-mail e a senha.';return;}if(!signIn(email.value,password.value)){error.value='E-mail ou senha incorretos. Crie uma conta primeiro, se ainda não tiver cadastro.';return;}await nextTick();await router.replace('/home');}
 </script>
 <style scoped src="../theme/auth.css"></style>
