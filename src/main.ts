@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+﻿import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router';
 
@@ -28,16 +28,19 @@ import '@ionic/vue/css/display.css';
  */
 
 /* @import '@ionic/vue/css/palettes/dark.always.css'; */
-/* @import '@ionic/vue/css/palettes/dark.class.css'; */
-import '@ionic/vue/css/palettes/dark.system.css';
+import '@ionic/vue/css/palettes/dark.class.css';
+/* @import '@ionic/vue/css/palettes/dark.system.css'; */
 
 /* Theme variables */
 import './theme/variables.css';
+import { loadSavedDarkTheme } from './services/theme';
 
 const app = createApp(App)
   .use(IonicVue)
   .use(router);
 
-router.isReady().then(() => {
+router.isReady().then(async () => {
+  await loadSavedDarkTheme();
   app.mount('#app');
 });
+

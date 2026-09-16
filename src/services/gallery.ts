@@ -1,6 +1,7 @@
 export type GalleryPhoto = {
   id: string;
   dataUrl: string;
+  filePath?: string;
   createdAt: string;
 };
 
@@ -25,6 +26,7 @@ export function loadPhotos(key: string): GalleryPhoto[] {
       .map((photo) => ({
         id: photo.id as string,
         dataUrl: photo.dataUrl as string,
+        filePath: photo.filePath,
         createdAt: photo.createdAt ?? new Date().toISOString(),
       }));
   } catch {
@@ -36,10 +38,11 @@ export function persistPhotos(key: string, photos: GalleryPhoto[]) {
   localStorage.setItem(key, JSON.stringify(photos));
 }
 
-export function createPhoto(dataUrl: string): GalleryPhoto {
+export function createPhoto(dataUrl: string, filePath?: string): GalleryPhoto {
   return {
     id: `${Date.now()}-${crypto.randomUUID()}`,
     dataUrl,
+    filePath,
     createdAt: new Date().toISOString(),
   };
 }
